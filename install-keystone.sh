@@ -32,7 +32,7 @@ config_setting(){
 	sed -i "1945s/#driver = sql/driver = keystone.token.persistence.backends.memcache.Token/" /etc/keystone/keystone.conf
 	sed -i "1747s/#driver = sql/driver = keystone.contrib.revoke.backends.sql.Revoke/" /etc/keystone/keystone.conf
 	sed -i "s/#\(verbose = true\)/\1/" /etc/keystone/keystone.conf
-	sed -i "s/#\(debug = false\)/\1/" /etc/keystone/keystone.conf
+	sed -i "s/#debug = false/debug = true/" /etc/keystone/keystone.conf
 
 	# Populate the Identity service database
 	su -s /bin/sh -c "keystone-manage db_sync" keystone
