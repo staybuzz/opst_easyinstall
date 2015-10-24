@@ -26,13 +26,13 @@ config_setting(){
 	# Configure Keystone
 	RANDHEX=`openssl rand -hex 10`
 	sed -i "s/#admin_token = ADMIN/admin_token = $RANDHEX/" /etc/keystone/keystone.conf
-	sed -i "s/#connection = <None>/connection = mysql:\/\/keystone:$PASSWORD@$CONTROLLER\/keystone/" /etc/keystone/keystone.conf
+	sed -i "s/connection = sqlite:\/\/\/\/var\/lib\/keystone\/keystone.db/connection = mysql:\/\/keystone:$PASSWORD@$CONTROLLER\/keystone/" /etc/keystone/keystone.conf
 	sed -i "s/#\(servers = localhost:11211\)/\1/" /etc/keystone/keystone.conf
 	sed -i "s/#provider = uuid/provider = keystone.token.providers.uuid.Provider/" /etc/keystone/keystone.conf
-	sed -i "1945s/#driver = sql/driver = keystone.token.persistence.backends.memcache.Token/" /etc/keystone/keystone.conf
-	sed -i "1747s/#driver = sql/driver = keystone.contrib.revoke.backends.sql.Revoke/" /etc/keystone/keystone.conf
-	sed -i "s/#\(verbose = true\)/\1/" /etc/keystone/keystone.conf
-	sed -i "s/#debug = false/debug = true/" /etc/keystone/keystone.conf
+	sed -ei "/^\[token\]/a driver = keystone.token.persistence.backends.memcache.Token" /etc/keystone/keystone.conf
+	sed -ei "/^\[revoke\]/a driver = keystone.contrib.revoke.backends.sql.Revoke" /etc/keystone/keystone.conf
+	sed -ei "/^\[DEFAULT\]/a verbose = true" /etc/keystone/keystone.conf
+	sed -ei "/^\[DEFAULT\]/a debug = true" /etc/keystone/keystone.conf
 
 	# Populate the Identity service database
 	su -s /bin/sh -c "keystone-manage db_sync" keystone
