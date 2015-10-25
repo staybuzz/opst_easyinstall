@@ -37,7 +37,7 @@ install_packages(){
 
 config_setting(){
 	echo $1
-	sed -ei "/^\[database\]/a connection = mysql:\/\/glance:$PASSWORD@$CONTROLLER\/glance" $1
+	sed -i "/^\[database\]/a connection = mysql:\/\/glance:$PASSWORD@$CONTROLLER\/glance" $1
 	sed -i "s/^\[keystone_authtoken\]/#\[keystone_authtoken\]/" $1
 	cat <<EOF >> $1
 [keystone_authtoken]
@@ -50,7 +50,7 @@ project_name = service
 username = glance
 password = $PASSWORD
 EOF
-	sed -ei "/^\[paste_deploy\]/a flavor = keystone" $1
+	sed -i "/^\[paste_deploy\]/a flavor = keystone" $1
 	
 	if [ $1 = "/etc/glance/glance-api.conf" ]; then
 		sed -i "s/^\[glance_store\]/#\[glance_store\]/" $1
@@ -61,9 +61,9 @@ filesystem_store_datadir = /var/lib/glance/images/
 EOF
 	fi
 
-	sed -ei "/^\[DEFAULT\]/a notification_driver = noop" $1
-	sed -ei "/^\[DEFAULT\]/a verbose = true" $1
-	sed -ei "/^\[DEFAULT\]/a debug = true" $1
+	sed -i "/^\[DEFAULT\]/a notification_driver = noop" $1
+	sed -i "/^\[DEFAULT\]/a verbose = true" $1
+	sed -i "/^\[DEFAULT\]/a debug = true" $1
 }
 
 sync_db(){
