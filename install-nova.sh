@@ -38,22 +38,24 @@ install_packages(){
 }
 
 config_setting(){
-  sed -i "/^\[DEFAULT\]/a verbose = true" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a debug = true" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a rpc_backend = rabbit" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a auth_strategy = keystone" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a my_ip = $CONTROLLER" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a vncserver_listen = $CONTROLLER" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a novncproxy_base_url = http://$CONTROLLER:6080/vnc_auto.html" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a vncserver_proxyclient_address = $CONTROLLER" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a vncserver_listen = $CONTROLLER" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a vnc_enabled = True" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a my_ip = $CONTROLLER" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a auth_strategy = keystone" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a rpc_backend = rabbit" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a debug = true" /etc/nova/nova.conf
   
-  sed -i "/^\[oslo_messaging_rabbit\]/a rabbit_host = $CONTROLLER" /etc/nova/nova.conf
-  sed -i "/^\[oslo_messaging_rabbit\]/a rabbit_userid = openstack" /etc/nova/nova.conf
-  sed -i "/^\[oslo_messaging_rabbit\]/a rrabbit_password = $PASSWORD" /etc/nova/nova.conf
+cat << EOF >> /etc/nova/nova.conf
+[oslo_messaging_rabbit]
+rabbit_host = $CONTROLLER
+rabbit_userid = openstack
+rabbit_password = $PASSWORD
   
-  sed -i "/^\[database\]/a connection = mysql:\/\/nova:$PASSWORD@$CONTROLLER\/nova" /etc/nova/nova.conf
+[database]
+connection = mysql:\/\/nova:$PASSWORD@$CONTROLLER\/nova
 
-  sed -i "s/^\[keystone_authtoken\]/#\[keystone_authtoken\]/" /etc/nova/nova.conf
-  cat <<EOF >> /etc/nova/nova.conf
 [keystone_authtoken]
 auth_uri = http://$CONTROLLER:5000
 auth_url = http://$CONTROLLER:35357
@@ -63,10 +65,13 @@ user_domain_id = default
 project_name = service
 username = glance
 password = $PASSWORD
-EOF
 
-  sed -i "/^\[glance\]/a host = $CONTROLLER" /etc/nova/nova.conf
-  sed -i "/^\[oslo_concurrency\]/a lock_path = \/var\/lib\/nova\/tmp" /etc/nova/nova.conf
+[glance]
+host = $CONTROLLER
+
+[oslo_concurrency]
+lock_path = /var/lib/nova/tmp
+EOF
 }
 
 sync_db(){
