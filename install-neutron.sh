@@ -131,8 +131,6 @@ config_setting_metadata(){
   
   sed -i "/^\[DEFAULT\]/a nova_metadata_ip = $CONTROLLER" /etc/neutron/metadata_agent.ini
   sed -i "/^\[DEFAULT\]/a metadata_proxy_shared_secret = $PASSWORD" /etc/neutron/metadata_agent.ini
-  sed -i "/^\[DEFAULT\]/a " /etc/neutron/metadata_agent.ini
-  sed -i "/^\[DEFAULT\]/a " /etc/neutron/metadata_agent.ini
   
   sed -i "/^\[DEFAULT\]/a verbose = True" /etc/neutron/metadata_agent.ini
   sed -i "/^\[DEFAULT\]/a debug = True" /etc/neutron/metadata_agent.ini
