@@ -96,9 +96,9 @@ EOF
 
 create_entity(){
 	# Authentication token
-	OS_TOKEN=$RANDHEX
+	export OS_TOKEN=$RANDHEX
 	# Endpoint
-	OS_URL=http://$CONTROLLER:35357/v2.0
+	export OS_URL=http://$CONTROLLER:35357/v2.0
 	
 	# Create the service entity for the Identity service
 	openstack service create --name keystone --description "OpenStack Identity" identity
