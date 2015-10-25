@@ -54,7 +54,7 @@ rabbit_userid = openstack
 rabbit_password = $PASSWORD
   
 [database]
-connection = mysql:\/\/nova:$PASSWORD@$CONTROLLER\/nova
+connection = mysql://nova:$PASSWORD@$CONTROLLER/nova
 
 [keystone_authtoken]
 auth_uri = http://$CONTROLLER:5000
@@ -79,7 +79,7 @@ sync_db(){
 }
 
 service_restart(){
-  for i in nova-api nova-cert nova-consoleauth nova-scheduler nova-conductor nova-novncproxy; do
+  for i in nova-api nova-cert nova-consoleauth nova-scheduler nova-conductor nova-novncproxy nova-compute; do
     systemctl restart $i
   done
 }
