@@ -130,3 +130,20 @@ create_entity(){
 	openstack role create user
 	openstack role add --project demo --user demo user
 }
+
+make_rc(){
+	cat <<EOF > ~/keystonerc_admin
+export OS_PROJECT_DOMAIN_ID=default
+export OS_USER_DOMAIN_ID=default
+export OS_PROJECT_NAME=admin
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=$PASSWORD
+export OS_AUTH_URL=http://$CONTROLLER:35357
+EOF
+}
+
+create_db
+install_packages
+config_setting
+make_rc
