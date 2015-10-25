@@ -167,7 +167,7 @@ service_restart(){
   done
 }
 
-set_network_parameter()
+set_network_parameter
 create_db
 create_entity
 install_packages
