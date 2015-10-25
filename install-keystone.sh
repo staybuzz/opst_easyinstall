@@ -29,10 +29,10 @@ config_setting(){
 	sed -i "s/connection = sqlite:\/\/\/\/var\/lib\/keystone\/keystone.db/connection = mysql:\/\/keystone:$PASSWORD@$CONTROLLER\/keystone/" /etc/keystone/keystone.conf
 	sed -i "s/#\(servers = localhost:11211\)/\1/" /etc/keystone/keystone.conf
 	sed -i "s/#provider = uuid/provider = keystone.token.providers.uuid.Provider/" /etc/keystone/keystone.conf
-	sed -ei "/^\[token\]/a driver = keystone.token.persistence.backends.memcache.Token" /etc/keystone/keystone.conf
-	sed -ei "/^\[revoke\]/a driver = keystone.contrib.revoke.backends.sql.Revoke" /etc/keystone/keystone.conf
-	sed -ei "/^\[DEFAULT\]/a verbose = true" /etc/keystone/keystone.conf
-	sed -ei "/^\[DEFAULT\]/a debug = true" /etc/keystone/keystone.conf
+	sed -i "/^\[token\]/a driver = keystone.token.persistence.backends.memcache.Token" /etc/keystone/keystone.conf
+	sed -i "/^\[revoke\]/a driver = keystone.contrib.revoke.backends.sql.Revoke" /etc/keystone/keystone.conf
+	sed -i "/^\[DEFAULT\]/a verbose = true" /etc/keystone/keystone.conf
+	sed -i "/^\[DEFAULT\]/a debug = true" /etc/keystone/keystone.conf
 
 	# Populate the Identity service database
 	su -s /bin/sh -c "keystone-manage db_sync" keystone
