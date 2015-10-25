@@ -1,4 +1,5 @@
 #!/bin/sh
+# Install Nova(include nova-compute)
 
 # Environment
 PASSWORD=password
@@ -32,8 +33,8 @@ create_entity(){
 }
 
 install_packages(){
-  apt install -y nova-api nova-cert nova-conductor nova-consoleauth \
-  nova-novncproxy nova-scheduler python-novaclient
+  apt install -y nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient \ 
+  nova-compute sysfsutils
 }
 
 config_setting(){
