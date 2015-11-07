@@ -42,6 +42,7 @@ config_setting(){
   
   sed -i "/^\[neutron\]/a url=http://$CONTROLLER:9696" /etc/ironic/ironic.conf
   
+  sed -i "/^\[keystone_authtoken\]/a auth_protocol=http" /etc/ironic/ironic.conf
   sed -i "/^\[keystone_authtoken\]/a admin_tenant_name=service" /etc/ironic/ironic.conf
   sed -i "/^\[keystone_authtoken\]/a admin_password=$PASSWORD" /etc/ironic/ironic.conf
   sed -i "/^\[keystone_authtoken\]/a admin_user=ironic" /etc/ironic/ironic.conf
