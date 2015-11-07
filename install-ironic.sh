@@ -34,7 +34,7 @@ create_entity(){
 }
 
 install_packages(){
-  apt install -y ironic-api ironic-conductor python-ironicclient
+  apt install -y ironic-api ironic-conductor python-ironicclient ipmitool
 }
 
 config_setting(){
