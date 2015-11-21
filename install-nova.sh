@@ -62,7 +62,7 @@ auth_plugin = password
 project_domain_id = default
 user_domain_id = default
 project_name = service
-username = glance
+username = nova
 password = $PASSWORD
 
 [glance]

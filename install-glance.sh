@@ -61,6 +61,7 @@ filesystem_store_datadir = /var/lib/glance/images/
 EOF
 	fi
 
+	sed -i "/^\[DEFAULT\]/a enable_v3_api = true" $1
 	sed -i "/^\[DEFAULT\]/a notification_driver = noop" $1
 	sed -i "/^\[DEFAULT\]/a verbose = true" $1
 	sed -i "/^\[DEFAULT\]/a debug = true" $1

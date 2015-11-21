@@ -81,7 +81,7 @@ project_domain_id = default
 user_domain_id = default
 region_name = RegionOne
 project_name = service
-username = nova
+username = neutron
 password = $PASSWORD
 EOF
 }
@@ -144,7 +144,7 @@ config_setting_nova(){
   sed -i "/^\[DEFAULT\]/a security_group_api = neutron" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a network_api_class = nova.network.neutronv2.api.API" /etc/nova/nova.conf
 
-  cat <<EOF >> /etc/nova/nova.conf
+  cat <<EOF >> /etc/neutron/neutron.conf
 [neutron]
 url = http://$CONTROLLER:9696
 auth_strategy = keystone
