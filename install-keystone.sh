@@ -86,7 +86,7 @@ EOF
 	chmod 755 /var/www/cgi-bin/keystone/*
 
 	# Restart Apache HTTP Server
-	systemctl restart apache2
+	service apache2 restart
 
 	# Remove Keystone SQLite DB
 	rm -f /var/lib/keystone/keystone.db

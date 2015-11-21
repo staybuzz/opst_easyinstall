@@ -71,8 +71,8 @@ sync_db(){
 }
 
 service_restart(){
-	systemctl restart glance-registry
-	systemctl restart glance-api
+	service glance-registry restart
+	service glance-api restart
 }
 
 create_db

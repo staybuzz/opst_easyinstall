@@ -79,7 +79,7 @@ sync_db(){
 
 service_restart(){
   for i in nova-api nova-cert nova-consoleauth nova-scheduler nova-conductor nova-novncproxy nova-compute; do
-    systemctl restart $i
+    service $i restart 
   done
 }
 

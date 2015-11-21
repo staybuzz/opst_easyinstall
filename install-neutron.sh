@@ -161,7 +161,7 @@ sync_db(){
 
 service_restart(){
   for i in nova-api neutron-server openvswitch-switch neutron-plugin-openvswitch-agent neutron-l3-agent neutron-l3-agent neutron-metadata-agent ; do
-    systemctl restart $i
+    service $i restart
   done
 }
 

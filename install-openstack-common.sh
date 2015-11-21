@@ -13,7 +13,7 @@ innodb_file_per_table
 init-connect = 'SET NAMES utf8'
 EOF
 
-systemctl restart mysql
+service mysql restart
 
 apt install -y rabbitmq-server
 rabbitmqctl add_user openstack $PASSWORD
