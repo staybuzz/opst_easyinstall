@@ -45,6 +45,14 @@ host = $CONTROLLER
 
 [oslo_concurrency]
 lock_path = /var/lib/nova/tmp
+
+[neutron]
+url = http://$CONTROLLER:9696
+auth_strategy = keystone
+admin_auth_url = http://$CONTROLLER:35357/v2.0
+admin_tenant_name = service
+admin_username = neutron
+admin_password = $PASSWORD
 EOF
 }
 
