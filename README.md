@@ -1,38 +1,38 @@
 # OpenStack Install Script
+for PoC
 
 ## Environment
- * OS: Ubuntu 15.10 Server (amd64) minimal
+ * OS: Ubuntu 14.04 Server (amd64)
  * OpenStack: Liberty
- * _All-in-one_
 
 ## These scripts can install...
  * Keystone
  * Glance
  * Nova
  * Neutron
- * Ironic
 
 ## How to Use
 Service password and Controller Node's IPaddr is written in each scripts.
 Please change your environment.
 
-### Install Keystone
- 1. `chmod +x install-keystone.sh`
- 2. `sudo ./install-keystone.sh` (Need root privilege)
+### Controller Node
+#### Install Keystone
+ 1. `sudo ./install-keystone.sh` (Need root privilege)
 
-### Install Glance
- 1. `chmod +x install-glance.sh`
- 2. `sudo ./install-glance.sh` (Need root privilege)
+#### Install Glance
+ 1. `sudo ./install-glance.sh` (Need root privilege)
 
-### Install Nova
- 1. `chmod +x install-nova.sh`
- 2. `sudo ./install-nova.sh` (Need root privilege)
+#### Install Nova
+ 1. `sudo ./install-nova.sh` (Need root privilege)
 
-### Install Neutron
- 1. `chmod +x install-neutron.sh`
- 2. `sudo ./install-neutron.sh` (Need root privilege)
+#### Install Neutron
+ 1. `sudo ./install-neutron.sh` (Need root privilege)
  This script _DO NOT_ configure bridge interfaces of openvswitch.
 
+### Compute Node
+
 ## TODO
- * Ironic Install Script
  * check root privilege
+ * env input prompt
+ * horizon install script
+ * mysql bind-address
