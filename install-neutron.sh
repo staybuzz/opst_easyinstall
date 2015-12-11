@@ -110,7 +110,7 @@ config_setting_ovs(){
 config_setting_l3(){
   sed -i "/^\[DEFAULT\]/a router_delete_namespaces = True" /etc/neutron/l3_agent.ini
   sed -i "/^\[DEFAULT\]/a external_network_bridge =" /etc/neutron/l3_agent.ini
-  sed -i "/^\[DEFAULT\]/a neutron.agent.linux.interface.OVSInterfaceDriver" /etc/neutron/l3_agent.ini
+  sed -i "/^\[DEFAULT\]/a interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver" /etc/neutron/l3_agent.ini
   sed -i "/^\[DEFAULT\]/a verbose = True" /etc/neutron/l3_agent.ini
   sed -i "/^\[DEFAULT\]/a debug = True" /etc/neutron/l3_agent.ini
 }
@@ -118,7 +118,7 @@ config_setting_l3(){
 config_setting_dhcp(){
   sed -i "/^\[DEFAULT\]/a dhcp_delete_namespaces = True" /etc/neutron/dhcp_agent.ini
   sed -i "/^\[DEFAULT\]/a dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq" /etc/neutron/dhcp_agent.ini
-  sed -i "/^\[DEFAULT\]/a neutron.agent.linux.interface.OVSInterfaceDriver" /etc/neutron/dhcp_agent.ini
+  sed -i "/^\[DEFAULT\]/a interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver" /etc/neutron/dhcp_agent.ini
   sed -i "/^\[DEFAULT\]/a verbose = True" /etc/neutron/dhcp_agent.ini
   sed -i "/^\[DEFAULT\]/a debug = True" /etc/neutron/dhcp_agent.ini
 }
@@ -137,8 +137,6 @@ config_setting_metadata(){
 }
 
 config_setting_nova(){
-  sed -i "/^\[DEFAULT\]/a metadata_proxy_shared_secret = $PASSWORD \n" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a service_metadata_proxy = True" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a firewall_driver = nova.virt.firewall.NoopFirewallDriver\n" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a security_group_api = neutron" /etc/nova/nova.conf
@@ -152,6 +150,8 @@ admin_auth_url = http://$CONTROLLER:35357/v2.0
 admin_tenant_name = service
 admin_username = neutron
 admin_password = $PASSWORD
+service_metadata_proxy = True
+metadata_proxy_shared_secret = $PASSWORD
 EOF
 }
 
