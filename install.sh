@@ -5,6 +5,7 @@
 ./install-glance.sh
 ./install-nova.sh
 ./install-neutron.sh
+./install-horizon.sh
 #./install-cinder.sh
 #./install-ironic.sh
 
