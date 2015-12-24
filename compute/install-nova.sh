@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Install Nova(include nova-compute)
 
 # Environment

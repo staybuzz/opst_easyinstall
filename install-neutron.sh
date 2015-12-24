@@ -1,8 +1,8 @@
-#/bin/sh
+#/bin/bash
 # Install Neutron(include networking)
 
 # Environment
-. env.conf
+. ./env.conf
 . $HOME/keystonerc_admin
 
 set_network_parameter(){

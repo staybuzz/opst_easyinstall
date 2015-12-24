@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 apt install -y ubuntu-cloud-keyring
 add-apt-repository cloud-archive:liberty

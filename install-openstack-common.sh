@@ -1,5 +1,5 @@
 #!/bin/bash
-. env.conf
+. ./env.conf
 
 apt install -y ubuntu-cloud-keyring
 add-apt-repository -y cloud-archive:liberty

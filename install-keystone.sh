@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 # 2015.10.24
 # Install Keystone
 
 # Environment
-. env.conf
+. ./env.conf
 
 create_db(){
 	# Configure MySQL for Keystone

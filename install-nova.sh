@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 # Install Nova(include nova-compute)
 
 # Environment
-. env.conf
+. ./env.conf
 . $HOME/keystonerc_admin
 
 create_db(){

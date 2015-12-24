@@ -1,7 +1,7 @@
-#/bin/sh
+#/bin/bash
 
 # Environment
-. env.conf
+. ./env.conf
 . $HOME/keystonerc_admin
 
 create_db(){
