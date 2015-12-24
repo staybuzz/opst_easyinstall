@@ -5,7 +5,7 @@ CONTROLLER=192.168.0.30
 
 apt install -y ubuntu-cloud-keyring
 add-apt-repository -y cloud-archive:liberty
-apt-get update && apt-get -y dist-upgrade
+apt-get update
 
 sudo debconf-set-selections <<< "mariadb-server mysql-server/root_password password $PASSWORD"
 sudo debconf-set-selections <<< "mariadb-server mysql-server/root_password_again password $PASSWORD"
