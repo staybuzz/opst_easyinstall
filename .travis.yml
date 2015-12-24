@@ -1,0 +1,2 @@
+language: bash
+script: sudo sh install-openstack-common.sh

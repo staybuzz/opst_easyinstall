@@ -8,9 +8,9 @@ apt-get update && apt-get -y dist-upgrade
 
 apt install -y mariadb-server python-mysqldb
 
-sed -i "s/^\[mysqld\]/a init-connect = 'SET NAMES utf8'" /etc/mysql/my.cnf
-sed -i "s/^\[mysqld\]/a innodb_file_per_table" /etc/mysql/my.cnf
-sed -i "s/^\[mysqld\]/a default-storage-engine = innodb" /etc/mysql/my.cnf
+sed -i "/^\[mysqld\]/a init-connect = 'SET NAMES utf8'" /etc/mysql/my.cnf
+sed -i "/^\[mysqld\]/a innodb_file_per_table" /etc/mysql/my.cnf
+sed -i "/^\[mysqld\]/a default-storage-engine = innodb" /etc/mysql/my.cnf
 
 service mysql restart
 
