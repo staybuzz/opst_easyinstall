@@ -1,5 +1,4 @@
 #!/bin/bash
-# 2015.10.24
 # Install Keystone
 
 # Environment
