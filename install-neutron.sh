@@ -2,8 +2,8 @@
 # Install Neutron(include networking)
 
 # Environment
-PASSWORD=password
-CONTROLLER=192.168.0.30
+. env.conf
+. $HOME/keystonerc_admin
 
 set_network_parameter(){
   cat <<EOF >> /etc/sysctl.conf

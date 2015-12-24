@@ -1,7 +1,5 @@
 #!/bin/bash
-
-PASSWORD=password
-CONTROLLER=192.168.0.30
+. env.conf
 
 apt install -y ubuntu-cloud-keyring
 add-apt-repository -y cloud-archive:liberty

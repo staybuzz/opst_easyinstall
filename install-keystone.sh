@@ -3,8 +3,7 @@
 # Install Keystone
 
 # Environment
-PASSWORD=password
-CONTROLLER=192.168.0.30
+. env.conf
 
 create_db(){
 	# Configure MySQL for Keystone

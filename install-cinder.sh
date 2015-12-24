@@ -1,8 +1,8 @@
 #/bin/sh
 
 # Environment
-PASSWORD=password
-CONTROLLER=192.168.0.30
+. env.conf
+. $HOME/keystonerc_admin
 
 create_db(){
 	# Configure MySQL for Cinder

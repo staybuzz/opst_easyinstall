@@ -2,9 +2,8 @@
 # Install Nova(include nova-compute)
 
 # Environment
-PASSWORD=password
-CONTROLLER=192.168.0.30
-COMPUTE=192.168.0.31
+. ../env.conf
+. $HOME/keystonerc_admin
 
 install_packages(){
   apt install -y nova-compute sysfsutils
