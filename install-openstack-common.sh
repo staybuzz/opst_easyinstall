@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PASSWORD=password
 CONTROLLER=192.168.0.30
@@ -7,6 +7,8 @@ apt install -y ubuntu-cloud-keyring
 add-apt-repository -y cloud-archive:liberty
 apt-get update && apt-get -y dist-upgrade
 
+sudo debconf-set-selections <<< "mariadb-server mysql-server/root_password password $PASSWORD"
+sudo debconf-set-selections <<< "mariadb-server mysql-server/root_password_again password $PASSWORD"
 apt install -y mariadb-server python-mysqldb
 
 sed -i "/^\[mysqld\]/a init-connect = 'SET NAMES utf8'" /etc/mysql/my.cnf
