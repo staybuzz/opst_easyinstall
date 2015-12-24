@@ -4,7 +4,7 @@ PASSWORD=password
 CONTROLLER=192.168.0.30
 
 apt install -y ubuntu-cloud-keyring
-add-apt-repository cloud-archive:liberty
+add-apt-repository -y cloud-archive:liberty
 apt-get update && apt-get -y dist-upgrade
 
 apt install -y mariadb-server python-mysqldb
