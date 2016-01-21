@@ -129,9 +129,6 @@ config_setting_metadata(){
   sed -i "s/^admin_user = %SERVICE_USER%/admin_user = neutron/" /etc/neutron/metadata_agent.ini
   sed -i "s/^admin_password = %SERVICE_PASSWORD%/admin_password = $PASSWORD/" /etc/neutron/metadata_agent.ini
   
-  sed -i "/^\[DEFAULT\]/a nova_metadata_ip = $CONTROLLER" /etc/neutron/metadata_agent.ini
-  sed -i "/^\[DEFAULT\]/a metadata_proxy_shared_secret = $PASSWORD" /etc/neutron/metadata_agent.ini
-  
   sed -i "/^\[DEFAULT\]/a verbose = True" /etc/neutron/metadata_agent.ini
   sed -i "/^\[DEFAULT\]/a debug = True" /etc/neutron/metadata_agent.ini
 }
@@ -142,7 +139,7 @@ config_setting_nova(){
   sed -i "/^\[DEFAULT\]/a security_group_api = neutron" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a network_api_class = nova.network.neutronv2.api.API" /etc/nova/nova.conf
 
-  cat <<EOF >> /etc/neutron/neutron.conf
+  cat <<EOF >> /etc/nova/nova.conf
 [neutron]
 url = http://$CONTROLLER:9696
 auth_strategy = keystone
