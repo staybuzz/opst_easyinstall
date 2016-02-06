@@ -37,6 +37,7 @@ install_packages(){
 }
 
 config_setting(){
+  sed -i "/^\[DEFAULT\]/a vnc_keymap=ja" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a novncproxy_base_url = http://$CONTROLLER:6080/vnc_auto.html" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a vncserver_proxyclient_address = $CONTROLLER" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a vncserver_listen = $CONTROLLER" /etc/nova/nova.conf
