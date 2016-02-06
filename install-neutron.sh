@@ -146,7 +146,7 @@ config_setting_metadata(){
 
 config_setting_nova(){
   sed -i "/^\[DEFAULT\]/a firewall_driver = nova.virt.firewall.NoopFirewallDriver\n" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a linuxnet_interface_driver = nova.network.linux_net.nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a security_group_api = neutron" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a network_api_class = nova.network.neutronv2.api.API" /etc/nova/nova.conf
 
