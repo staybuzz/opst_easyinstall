@@ -44,7 +44,7 @@ create_entity(){
 }
 
 install_packages(){
-  apt install -y install neutron-server neutron-plugin-ml2 \
+  apt install -y neutron-server neutron-plugin-ml2 \
   neutron-plugin-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent \
   neutron-metadata-agent python-neutronclient conntrack
 }
