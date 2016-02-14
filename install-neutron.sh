@@ -17,7 +17,7 @@ EOF
 
 create_db(){
 # Configure MySQL for Neutron
-  MYSQL="mysql -uroot -ppassword -e"
+  MYSQL="mysql -uroot -p$PASSWORD -e"
   $MYSQL "CREATE DATABASE neutron;"
   $MYSQL "GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '$PASSWORD';"
   $MYSQL "GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%'  IDENTIFIED BY '$PASSWORD';"

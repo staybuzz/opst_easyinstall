@@ -6,7 +6,7 @@
 
 create_db(){
 	# Configure MySQL for Keystone
-	MYSQL="mysql -uroot -ppassword -e"
+	MYSQL="mysql -uroot -p$PASSWORD -e"
 	$MYSQL "CREATE DATABASE keystone;"
 	$MYSQL "GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY '$PASSWORD';"
 	$MYSQL "GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%'  IDENTIFIED BY '$PASSWORD';"

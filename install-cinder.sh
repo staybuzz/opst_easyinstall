@@ -6,7 +6,7 @@
 
 create_db(){
 	# Configure MySQL for Cinder
-	MYSQL="mysql -uroot -ppassword -e"
+	MYSQL="mysql -uroot -p$PASSWORD -e"
 	$MYSQL "CREATE DATABASE cinder;"
 	$MYSQL "GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' IDENTIFIED BY '$PASSWORD';"
 	$MYSQL "GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%'  IDENTIFIED BY '$PASSWORD';"

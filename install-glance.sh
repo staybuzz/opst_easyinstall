@@ -6,7 +6,7 @@
 
 create_db(){
 	# Configure MySQL for Glance
-	MYSQL="mysql -uroot -ppassword -e"
+	MYSQL="mysql -uroot -p$PASSWORD -e"
 	$MYSQL "CREATE DATABASE glance;"
 	$MYSQL "GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '$PASSWORD';"
 	$MYSQL "GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%'  IDENTIFIED BY '$PASSWORD';"

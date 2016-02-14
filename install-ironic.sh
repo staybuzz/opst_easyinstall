@@ -7,7 +7,7 @@
 
 create_db(){
 # Configure MySQL for Ironic
-  MYSQL="mysql -uroot -ppassword -e"
+  MYSQL="mysql -uroot -p$PASSWORD -e"
   $MYSQL "CREATE DATABASE ironic;"
   $MYSQL "GRANT ALL PRIVILEGES ON ironic.* TO 'ironic'@'localhost' IDENTIFIED BY '$PASSWORD';"
   $MYSQL "GRANT ALL PRIVILEGES ON ironic.* TO 'ironic'@'%'  IDENTIFIED BY '$PASSWORD';"

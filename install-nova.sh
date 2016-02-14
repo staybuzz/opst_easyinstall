@@ -7,7 +7,7 @@
 
 create_db(){
 # Configure MySQL for Nova
-  MYSQL="mysql -uroot -ppassword -e"
+  MYSQL="mysql -uroot -p$PASSWORD -e"
   $MYSQL "CREATE DATABASE nova;"
   $MYSQL "GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '$PASSWORD';"
   $MYSQL "GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%'  IDENTIFIED BY '$PASSWORD';"
