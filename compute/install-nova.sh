@@ -10,10 +10,6 @@ install_packages(){
 }
 
 config_setting(){
-  sed -i "/^\[DEFAULT\]/a novncproxy_base_url = http://$CONTROLLER:6080/vnc_auto.html" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a vncserver_proxyclient_address = $COMPUTE" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a vncserver_listen = 0.0.0.0" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a vnc_enabled = True" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a my_ip = $COMPUTE" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a auth_strategy = keystone" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a rpc_backend = rabbit" /etc/nova/nova.conf
@@ -52,6 +48,13 @@ admin_auth_url = http://$CONTROLLER:35357/v2.0
 admin_tenant_name = service
 admin_username = neutron
 admin_password = $PASSWORD
+
+[vnc]
+enabled = True
+vncserver_listen = $CONTROLLER
+vncserver_proxyclient_address = $CONTROLLER
+novncproxy_base_url = http://$COMPUTE:6080/vnc_auto.html
+#vnc_keymap=ja
 EOF
 }
 
