@@ -44,7 +44,9 @@ create_entity(){
 }
 
 install_packages(){
-  apt install -y neutron-server neutron-plugin-ml2 python-neutronclient neutron-plugin-ml2 neutron-plugin-openvswitch-agent neutron-l3-agent neutron-dhcp-agent neutron-metadata-agent
+  apt install -y install neutron-server neutron-plugin-ml2 \
+  neutron-plugin-linuxbridge-agent neutron-l3-agent neutron-dhcp-agent \
+  neutron-metadata-agent python-neutronclient conntrack
 }
 
 config_setting_neutron(){
@@ -87,38 +89,45 @@ EOF
 }
 
 config_setting_ml2(){
-  sed -i "/^\[ml2\]/a mechanism_drivers = openvswitch" /etc/neutron/plugins/ml2/ml2_conf.ini
-  sed -i "/^\[ml2\]/a tenant_network_types = gre" /etc/neutron/plugins/ml2/ml2_conf.ini
-  sed -i "/^\[ml2\]/a type_drivers = flat,vlan,gre,vxlan" /etc/neutron/plugins/ml2/ml2_conf.ini
+  sed -i "/^\[ml2\]/a extension_drivers = port_security" /etc/neutron/plugins/ml2/ml2_conf.ini
+  sed -i "/^\[ml2\]/a mechanism_drivers = linuxbridge,l2population" /etc/neutron/plugins/ml2/ml2_conf.ini
+  sed -i "/^\[ml2\]/a tenant_network_types = vxlan" /etc/neutron/plugins/ml2/ml2_conf.ini
+  sed -i "/^\[ml2\]/a type_drivers = flat,vlan,vxlan" /etc/neutron/plugins/ml2/ml2_conf.ini
   
-  sed -i "/^\[ml2_type_gre\]/a tunnel_id_ranges = 1:1000" /etc/neutron/plugins/ml2/ml2_conf.ini
+  sed -i "/^\[ml2_type_vxlan\]/a vni_ranges = 1:1000" /etc/neutron/plugins/ml2/ml2_conf.ini
   
   sed -i "/^\[ml2_type_flat\]/a flat_networks = external" /etc/neutron/plugins/ml2/ml2_conf.ini
   
-  sed -i "/^\[securitygroup\]/a firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver" /etc/neutron/plugins/ml2/ml2_conf.ini
   sed -i "/^\[securitygroup\]/a enable_ipset = True" /etc/neutron/plugins/ml2/ml2_conf.ini
   sed -i "/^\[securitygroup\]/a enable_security_group = True" /etc/neutron/plugins/ml2/ml2_conf.ini
 }
 
-config_setting_ovs(){
-  sed -i "/^\[ovs\]/a bridge_mappings = external:br-ex" /etc/neutron/plugins/ml2/openvswitch_agent.ini
-  sed -i "/^\[ovs\]/a local_ip = $CONTROLLER" /etc/neutron/plugins/ml2/openvswitch_agent.ini
+config_setting_linuxbridge(){
+  sed -i "/^\[linux_bridge\]/a physical_interface_mappings = external:eth0" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[vxlan\]/a local_ip = $CONTROLLER" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[vxlan\]/a l2_population = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[vxlan\]/a enable_vxlan = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
   
-  sed -i "/^\[agent\]/a tunnel_types = gre" /etc/neutron/plugins/ml2/openvswitch_agent.ini
+  sed -i "/^\[agent\]/a prevent_arp_spoofing = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+
+  sed -i "/^\[securitygroup\]/a firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[securitygroup\]/a enable_security_group = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
 }
 
 config_setting_l3(){
   sed -i "/^\[DEFAULT\]/a router_delete_namespaces = True" /etc/neutron/l3_agent.ini
   sed -i "/^\[DEFAULT\]/a external_network_bridge =" /etc/neutron/l3_agent.ini
-  sed -i "/^\[DEFAULT\]/a interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver" /etc/neutron/l3_agent.ini
+  sed -i "/^\[DEFAULT\]/a interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver" /etc/neutron/l3_agent.ini
   sed -i "/^\[DEFAULT\]/a verbose = True" /etc/neutron/l3_agent.ini
   sed -i "/^\[DEFAULT\]/a debug = True" /etc/neutron/l3_agent.ini
 }
 
 config_setting_dhcp(){
+#TODO
+  sed -i "/^\[DEFAULT\]/a enable_isolated_metadata = True" /etc/neutron/dhcp_agent.ini
   sed -i "/^\[DEFAULT\]/a dhcp_delete_namespaces = True" /etc/neutron/dhcp_agent.ini
   sed -i "/^\[DEFAULT\]/a dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq" /etc/neutron/dhcp_agent.ini
-  sed -i "/^\[DEFAULT\]/a interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver" /etc/neutron/dhcp_agent.ini
+  sed -i "/^\[DEFAULT\]/a interface_driver = neutron.agent.linux.interface.BridgeInterfaceDriver" /etc/neutron/dhcp_agent.ini
   sed -i "/^\[DEFAULT\]/a verbose = True" /etc/neutron/dhcp_agent.ini
   sed -i "/^\[DEFAULT\]/a debug = True" /etc/neutron/dhcp_agent.ini
 }
@@ -129,13 +138,15 @@ config_setting_metadata(){
   sed -i "s/^admin_user = %SERVICE_USER%/admin_user = neutron/" /etc/neutron/metadata_agent.ini
   sed -i "s/^admin_password = %SERVICE_PASSWORD%/admin_password = $PASSWORD/" /etc/neutron/metadata_agent.ini
   
+  sed -i "/^\[DEFAULT\]/a metadata_proxy_shared_secret = $PASSWORD" /etc/neutron/metadata_agent.ini
+  sed -i "/^\[DEFAULT\]/a nova_metadata_ip = $CONTROLLER" /etc/neutron/metadata_agent.ini
   sed -i "/^\[DEFAULT\]/a verbose = True" /etc/neutron/metadata_agent.ini
   sed -i "/^\[DEFAULT\]/a debug = True" /etc/neutron/metadata_agent.ini
 }
 
 config_setting_nova(){
   sed -i "/^\[DEFAULT\]/a firewall_driver = nova.virt.firewall.NoopFirewallDriver\n" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a linuxnet_interface_driver = nova.network.linux_net.nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a security_group_api = neutron" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a network_api_class = nova.network.neutronv2.api.API" /etc/nova/nova.conf
 
@@ -157,7 +168,7 @@ sync_db(){
 }
 
 service_restart(){
-  for i in nova-api neutron-server openvswitch-switch neutron-plugin-openvswitch-agent neutron-l3-agent neutron-l3-agent neutron-metadata-agent ; do
+  for i in nova-api neutron-server neutron-l3-agent neutron-metadata-agent neutron-plugin-linuxbridge-agent ; do
     service $i restart
   done
 }
@@ -168,7 +179,7 @@ create_entity
 install_packages
 config_setting_neutron
 config_setting_ml2
-config_setting_ovs
+config_setting_linuxbridge
 config_setting_l3
 config_setting_dhcp
 config_setting_metadata

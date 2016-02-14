@@ -18,7 +18,7 @@ EOF
 }
 
 install_packages(){
-  apt install -y neutron-plugin-ml2 neutron-plugin-openvswitch-agent
+  apt install -y neutron-plugin-linuxbridge-agent conntrack
 }
 
 config_setting_neutron(){
@@ -51,35 +51,20 @@ config_setting_neutron(){
   
 }
 
-config_setting_ml2(){
-  sed -i "/^\[ml2\]/a mechanism_drivers = openvswitch" /etc/neutron/plugins/ml2/ml2_conf.ini
-  sed -i "/^\[ml2\]/a tenant_network_types = gre" /etc/neutron/plugins/ml2/ml2_conf.ini
-  sed -i "/^\[ml2\]/a type_drivers = flat,vlan,gre,vxlan" /etc/neutron/plugins/ml2/ml2_conf.ini
+config_setting_linuxbridge(){
+  sed -i "/^\[linux_bridge\]/a physical_interface_mappings = external:eth0" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[vxlan\]/a l2_population = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[vxlan\]/a local_ip = $COMPUTE" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[vxlan\]/a enable_vxlan = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
   
-  sed -i "/^\[ml2_type_gre\]/a tunnel_id_ranges = 1:1000" /etc/neutron/plugins/ml2/ml2_conf.ini
-  
-  sed -i "/^\[ml2_type_flat\]/a flat_networks = external" /etc/neutron/plugins/ml2/ml2_conf.ini
-  
-  sed -i "/^\[securitygroup\]/a firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver" /etc/neutron/plugins/ml2/ml2_conf.ini
-  sed -i "/^\[securitygroup\]/a enable_ipset = True" /etc/neutron/plugins/ml2/ml2_conf.ini
-  sed -i "/^\[securitygroup\]/a enable_security_group = True" /etc/neutron/plugins/ml2/ml2_conf.ini
+  sed -i "/^\[agent\]/a prevent_arp_spoofing = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
 
-  cat <<EOF >> /etc/neutron/plugins/ml2/ml2_conf.ini
-[ovs]
-local_ip = $COMPUTE
-
-[agent]
-tunnel_types = gre
-EOF
+  sed -i "/^\[securitygroup\]/a firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+  sed -i "/^\[securitygroup\]/a enable_security_group = True" /etc/neutron/plugins/ml2/linuxbridge_agent.ini
 }
 
 config_setting_nova(){
-  sed -i "/^\[DEFAULT\]/a firewall_driver = nova.virt.firewall.NoopFirewallDriver\n" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a security_group_api = neutron" /etc/nova/nova.conf
-  sed -i "/^\[DEFAULT\]/a network_api_class = nova.network.neutronv2.api.API" /etc/nova/nova.conf
-
-  cat <<EOF >> /etc/neutron/neutron.conf
+  cat <<EOF >> /etc/neutron/nova.conf
 [neutron]
 url = http://$CONTROLLER:9696
 auth_strategy = keystone
@@ -91,7 +76,7 @@ EOF
 }
 
 service_restart(){
-  for i in openvswitch-switch nova-compute neutron-plugin-openvswitch-agent; do
+  for i in nova-compute neutron-plugin-linuxbridge-agent; do
     service $i restart
   done
 }
@@ -99,6 +84,6 @@ service_restart(){
 set_network_parameter
 install_packages
 config_setting_neutron
-config_setting_ml2
+config_setting_linuxbridge
 config_setting_nova
 service_restart
