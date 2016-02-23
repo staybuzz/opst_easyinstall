@@ -10,6 +10,10 @@ install_packages(){
 }
 
 config_setting(){
+  sed -i "/^\[DEFAULT\]/a firewall_driver = nova.virt.firewall.NoopFirewallDriver" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a linuxnet_interface_driver = nova.network.linux_net.NeutronLinuxBridgeInterfaceDriver" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a security_group_api = neutron" /etc/nova/nova.conf
+  sed -i "/^\[DEFAULT\]/a network_api_class = nova.network.neutronv2.api.API" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a my_ip = $COMPUTE" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a auth_strategy = keystone" /etc/nova/nova.conf
   sed -i "/^\[DEFAULT\]/a rpc_backend = rabbit" /etc/nova/nova.conf
