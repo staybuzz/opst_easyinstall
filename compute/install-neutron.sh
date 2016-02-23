@@ -3,7 +3,6 @@
 
 # Environment
 . ../env.conf
-. $HOME/keystonerc_admin
 
 set_network_parameter(){
   cat <<EOF >> /etc/sysctl.conf
@@ -64,7 +63,7 @@ config_setting_linuxbridge(){
 }
 
 config_setting_nova(){
-  cat <<EOF >> /etc/neutron/nova.conf
+  cat <<EOF >> /etc/nova/nova.conf
 [neutron]
 url = http://$CONTROLLER:9696
 auth_strategy = keystone

@@ -3,7 +3,6 @@
 
 # Environment
 . ../env.conf
-. $HOME/keystonerc_admin
 
 install_packages(){
   apt install -y nova-compute sysfsutils
