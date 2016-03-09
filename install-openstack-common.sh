@@ -1,7 +1,7 @@
 #!/bin/bash
 . ./env.conf
 
-apt install -y ubuntu-cloud-keyring
+apt install -y ubuntu-cloud-keyring software-properties-common curl
 add-apt-repository -y cloud-archive:liberty
 apt-get update
 
